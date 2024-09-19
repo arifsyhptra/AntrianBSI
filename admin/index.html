@@ -1,0 +1,162 @@
+<?php 
+	session_start();
+	if (!isset($_SESSION["loket_client"])) {
+		$_SESSION["loket_client"] = NULL;
+	}
+?>
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+	    <meta charset="utf-8">
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	    <meta name="viewport" content="width=device-width, initial-scale=1">
+	    <meta name="description" content="">
+	    <meta name="author" content="">
+	    <title>Admin : Queue</title>
+	    <link href="../dashboard.css" rel="stylesheet">
+	    <link href="../css/bootstrap.min.css" rel="stylesheet">
+	    <link href="/assert/css/jumbotron-narrow.css" rel="stylesheet">
+	    	    <link rel="stylesheet" href="../font-awesome-4.7.0/css/font-awesome.min.css">
+		<script src="../assert/js/jquery.min.js"></script>
+	</head>
+	<style>
+      
+
+        .square-box {
+            width: 200;
+            height: 200px;
+            font-size: 10rem;
+            background-color: #007bff;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+    </style>
+  	<body>
+		<nav class="navbar navbar-expand-md navbar-light bg-white fixed-top">
+			<div class="container-fluid">
+				<!-- Logo di kiri -->
+				<div>
+					<img src="logo.png" width="200">
+				</div>
+		
+				<!-- Spacer agar elemen berikutnya berada di kanan -->
+				<div class="ms-auto">
+					Arifsyahputra
+				</div>
+			</div>
+		</nav>
+		
+
+
+		<div class="container mt-5">
+			<div class="row">
+				<!-- Kolom Video YouTube -->
+				<div class="col-md-6 video-container">
+					<div class="embed-responsive embed-responsive-16by9">
+						<iframe class="embed-responsive-item" src="https://www.youtube.com/embed/jp6cq73wiSc?autoplay=1" allowfullscreen></iframe>
+					</div>
+				</div>
+			</div>
+		
+			<!-- Row baru untuk kedua kotak antrian -->
+			<div class="row mt-3">
+				<!-- Kotak antrian pertama -->
+				<div class="col-md-6">
+					<div class="antrian-info text-center">
+						<h2>Customer Service 1</h2>
+						<div class="square-box" id="antrian1">1</div>
+						<!-- Tombol untuk menaikkan dan menurunkan nomor antrian 1 -->
+						<button class="btn btn-success mt-3" onclick="incrementAntrian(1)">Tambah</button>
+						<button class="btn btn-danger mt-3" onclick="decrementAntrian(1)">Kurangi</button>
+					</div>
+				</div>
+		
+				<!-- Kotak antrian kedua -->
+				<div class="col-md-6">
+					<div class="antrian-info text-center">
+						<h2>Customer Service 2</h2>
+						<div class="square-box" id="antrian2">2</div>
+						<!-- Tombol untuk menaikkan dan menurunkan nomor antrian 2 -->
+						<button class="btn btn-success mt-3" onclick="incrementAntrian(2)">Tambah</button>
+						<button class="btn btn-danger mt-3" onclick="decrementAntrian(2)">Kurangi</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+        
+        
+        
+        
+    <div class="card text-center">
+		
+  <div class="card-header">
+    Sitem Bank
+  </div>
+  <div class="card-body">
+    <h4 class="card-title">Admin Control Antrian yang Sedang berlangsung</h4>	
+    <div class="container">
+    	<form>
+    		<div class="jumbotron">
+	        <h1 class="next">
+	        	<span class="glyphicon glyphicon-book"></span>
+	        </h1>
+
+        	<button value="Refresh Page" type="button" class="btn btn-primary next_getway">Panggil <span class="fa fa-chevron-circle-right"></span>
+        	</button>
+	      	</div>
+
+    	</form>
+    	<!--<br/>
+      	<footer class="footer">
+        <p>&copy; Copyright <?php echo date("Y");?></p>
+      	</footer>-->
+    </div>
+  	</body>
+  	<script type="text/javascript">
+
+
+
+
+    // Function untuk menaikkan nomor antrian
+    function incrementAntrian(antrianId) {
+        let antrianElement = document.getElementById("antrian" + antrianId);
+        let currentNumber = parseInt(antrianElement.textContent);
+        antrianElement.textContent = currentNumber + 1;
+    }
+
+    // Function untuk menurunkan nomor antrian
+    function decrementAntrian(antrianId) {
+        let antrianElement = document.getElementById("antrian" + antrianId);
+        let currentNumber = parseInt(antrianElement.textContent);
+        if (currentNumber > 0) { // Agar tidak menurunkan angka di bawah 0
+            antrianElement.textContent = currentNumber - 1;
+        }
+    }
+
+
+	$("document").ready(function()
+	{
+
+		// GET LAST COUNTER
+	    $.post( "../apps/admin_getway.php", function( data ) {
+			$(".next").html(data['next']);
+		},"json");
+		
+	
+	    // RESET 
+		$(".next_getway").click(function(){
+			var next_current = $(".next").text();
+			$.post( "../apps/admin_getway.php", {"next_current": next_current}, function( data ) {
+				$(".next").html(data['next']);
+			},"json");
+		});
+
+	});
+	</script>
+</html>
+
