@@ -1,199 +1,186 @@
-<?php 
-	session_start();
-	if (!isset($_SESSION["loket_client"])) {
-		$_SESSION["loket_client"] = NULL;
-	}
-?>
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-	    <meta charset="utf-8">
-	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-	    <meta name="viewport" content="width=device-width, initial-scale=1">
-	    <meta name="description" content="">
-	    <meta name="author" content="">
-	    <title>Admin : Queue</title>
-	    <link href="dashboard.css" rel="stylesheet">
-	    <link href="css/bootstrap.min.css" rel="stylesheet">
-	    <link href=assert/css/jumbotron-narrow.css" rel="stylesheet">
-	    	    <link rel="stylesheet" href="../font-awesome-4.7.0/css/font-awesome.min.css">
-		<script src="../assert/js/jquery.min.js"></script>
-	</head>
-	<style>
-      
-.center-text {
-				display: flex;
-				justify-content: center;
-				padding-top: -20px;
-				padding-bottom: 120px;;
-				height: 10vh; /* membuat elemen mengambil tinggi layar */
-				text-align: center;
-				font-size: 17px; /* mengatur ukuran font */
-				
-			}
-			.background-text {
-				background-color: #00a39d; /* Warna latar belakang kuning muda */
-				padding: 80px;
-				border-radius: 10px; /* Membuat sudut-sudut kotak menjadi melengkung */
-				color: #ffffff; /* Warna teks */
-			}
-        .square-box {
-            width: 50;
-            height: 80px;
-            font-size: 3rem;
-            background-color: #00a39d;
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border-radius: 10px;
-            margin-top: 20px;
-        }
-    </style>
-  	<body>
-		<audio id="soundEffect" src="../audio/new/Airport_Bell.mp3"></audio>
-
-		<nav class="navbar navbar-expand-md navbar-light bg-white fixed-top">
-			<div class="container-fluid">
-				<!-- Logo di kiri -->
-				<div>
-					<img src="logo.png" width="200">
-				</div>
-		
-				<!-- Spacer agar elemen berikutnya berada di kanan -->
-				<div class="ms-auto">
-					Arifsyahputraa
-				</div>
-			</div>
-		</nav>
-
-		<div class="center-text">
-			<div class="background-text">
-				<p>Assalamu'alaikum Warahmatullahi Wabarakatuh<br>Jadikan pengalaman Kamu lebih baik hari ini</p>
-			</div>
-        </div>
-
-
-
-		<div class="container mt-5">
-			<div class="row">
-				<!-- Kolom Video YouTube -->
-				<div class="col-md-6 video-container">
-					<div class="embed-responsive embed-responsive-16by9">
-						<iframe class="embed-responsive-item" src="https://www.youtube.com/embed/jp6cq73wiSc?autoplay=1" allowfullscreen></iframe>
-					</div>
-				</div>
-			</div>
-		
-			<!-- Row baru untuk kedua kotak antrian -->
-			<div class="row mt-3">
-				<!-- Kotak antrian pertama -->
-				<div class="col-md-6">
-					<div class="antrian-info text-center">
-						<h5>Customer Service</h5>
-						<div class="square-box" id="antrian1">1</div>
-						<!-- Tombol untuk menaikkan dan menurunkan nomor antrian 1 -->
-						<button class="btn btn-success mt-3" onclick="incrementAntrian(1)">Tambah</button>
-						<button class="btn btn-danger mt-3" onclick="decrementAntrian(1)">Kurangi</button>
-					</div>
-				</div>
-		
-				<!-- Kotak antrian kedua -->
-				<div class="col-md-6">
-					<div class="antrian-info text-center">
-						<h5>Teller </h5>
-						<div class="square-box" id="antrian2">1</div>
-						<!-- Tombol untuk menaikkan dan menurunkan nomor antrian 2 -->
-						<button class="btn btn-success mt-3" onclick="incrementAntrian(2)">Tambah</button>
-						<button class="btn btn-danger mt-3" onclick="decrementAntrian(2)">Kurangi</button>
-					</div>
-				</div>
-			</div>
-		</div>
-		
-        
-        
-        
-        
-    <div class="card text-center">
-		
-  <div class="card-header">
-    Sitem Bank
-  </div>
-  <div class="card-body">
-    <h4 class="card-title">Admin Control Antrian yang Sedang berlangsungga</h4>	
-    <div class="container">
-    	<form>
-    		<div class="jumbotron">
-	        <h1 class="next">
-	        	<span class="glyphicon glyphicon-book"></span>
-	        </h1>
-
-        	<button value="Refresh Page" type="button" class="btn btn-primary next_getway">Panggil <span class="fa fa-chevron-circle-right"></span>
-        	</button>
-	      	</div>
-
-    	</form>
-    	<!--<br/>
-      	<footer class="footer">
-        <p>&copy; Copyright <?php echo date("Y");?></p>
-      	</footer>-->
-    </div>
-  	</body>
-	  <audio id="soundEffect" src="Airport_Bell.mp3"></audio>
-	  <audio id="soundEffect2" src="out.wav"></audio>
-	  <audio id="nomor" src="nomor-urut.MP3"></audio>
-	  <audio id="dua" src="2.MP3"></audio>
-
-	  
-
-  	<script type="text/javascript">
-
-
-
-
-    // Function untuk menaikkan nomor antrian
-    function playSoundsSequentially() {
-    var sound1 = document.getElementById("soundEffect2");
-    var sound2 = document.getElementById("nomor");
-    var sound3 = document.getElementById("dua");
-
-    // Mainkan sound1 terlebih dahulu
-    sound1.play();
-
-    // Ketika sound1 selesai, mainkan sound2
-    sound1.addEventListener("ended", function() {
-        sound2.play();
-    });
-
-    // Ketika sound2 selesai, mainkan sound3
-    sound2.addEventListener("ended", function() {
-        sound3.play();
-    });
-}
-
-// Panggil playSoundsSequentially di dalam fungsi incrementAntrian
-function incrementAntrian(antrianId) {
-    let antrianElement = document.getElementById("antrian" + antrianId);
-    let currentNumber = parseInt(antrianElement.textContent);
-    antrianElement.textContent = currentNumber + 1;
-
-    // Mainkan suara secara berurutan
-    playSoundsSequentially();
-}
-    // Function untuk menurunkan nomor antrian
-    function decrementAntrian(antrianId) {
-        let antrianElement = document.getElementById("antrian" + antrianId);
-        let currentNumber = parseInt(antrianElement.textContent);
-        if (currentNumber > 0) { // Agar tidak menurunkan angka di bawah 0
-            antrianElement.textContent = currentNumber - 1;
-			// Memutar suara saat angka dinaikkan
-		var sound = document.getElementById("soundEffect2");
-    sound.play();
-        }
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Admin : Queue</title>
+    <link href="dashboard.css" rel="stylesheet">
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href=assert/css/jumbotron-narrow.css" rel="stylesheet">
+    <link rel="stylesheet" href="../font-awesome-4.7.0/css/font-awesome.min.css">
+    <script src="../assert/js/jquery.min.js"></script>
+</head>
+<style>
+    .center-text {
+        display: flex;
+        justify-content: center;
+        padding-top: -20px;
+        padding-bottom: 120px;
+        height: 10vh; 
+        text-align: center;
+        font-size: 17px;
     }
+    .background-text {
+        background-color: #00a39d;
+        padding: 80px;
+        border-radius: 10px;
+        color: #ffffff;
+    }
+    .square-box {
+        width: 100%;
+        height: 80px;
+        font-size: 3rem;
+        background-color: #007bff;
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 10px;
+        margin-top: 20px;
+    }
+    #antrian-kotak {
+        width: 50%;
+        height: 200px;
+        font-size: 3rem;
+        background-color: #28a745;
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 10px;
+        margin-left: 20px;
+    }
+</style>
+<body>
+    <audio id="soundEffect" src="../audio/new/Airport_Bell.mp3"></audio>
 
+    <nav class="navbar navbar-expand-md navbar-light bg-white fixed-top">
+        <div class="container-fluid">
+            <div>
+                <img src="logo.png" width="200">
+            </div>
+            <div class="ms-auto">
+                Arifsyahputra
+            </div>
+        </div>
+    </nav>
 
-	</script>
+    <div class="center-text">
+        <div class="background-text">
+            <p>Assalamu'alaikum Warahmatullahi Wabarakatuh<br>Jadikan pengalaman Kamu lebih baik hari ini</p>
+        </div>
+    </div>
+
+    <div class="container mt-5">
+        <div class="row">
+            <!-- Kolom Video YouTube -->
+            <div class="col-md-6 video-container">
+                <div class="embed-responsive embed-responsive-16by9">
+                    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/jp6cq73wiSc?autoplay=1" allowfullscreen></iframe>
+                </div>
+            </div>
+
+            <!-- Kotak antrian di sebelah kanan video -->
+            <div class="col-md-6 d-flex justify-content-center align-items-center">
+                <div id="antrian-kotak">
+                    1 <!-- Nilai awal yang akan berubah saat antrian ditambah -->
+                </div>
+            </div>
+        </div>
+    
+        <!-- Row baru untuk kedua kotak antrian -->
+        <div class="row mt-3">
+            <!-- Kotak antrian pertama -->
+            <div class="col-md-6">
+                <div class="antrian-info text-center">
+                    <h5>Customer Service</h5>
+                    <div class="square-box" id="antrian1">1</div>
+                    <!-- Tombol untuk menaikkan dan menurunkan nomor antrian 1 -->
+                    <button class="btn btn-success mt-3" onclick="incrementAntrian(1, 'Customer Service')">Tambah</button>
+                    <button class="btn btn-danger mt-3" onclick="decrementAntrian(1)">Kurangi</button>
+                </div>
+            </div>
+    
+            <!-- Kotak antrian kedua -->
+            <div class="col-md-6">
+                <div class="antrian-info text-center">
+                    <h5>Teller </h5>
+                    <div class="square-box" id="antrian2">1</div>
+                    <!-- Tombol untuk menaikkan dan menurunkan nomor antrian 2 -->
+                    <button class="btn btn-success mt-3" onclick="incrementAntrian(2, 'Teller')">Tambah</button>
+                    <button class="btn btn-danger mt-3" onclick="decrementAntrian(2)">Kurangi</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <audio id="soundEffect" src="../audio/new/Airport_Bell.mp3"></audio>
+    <audio id="soundEffect2" src="../audio/new/out.wav"></audio>
+    <audio id="nomor-urut" src="../audio/new/nomor-urut.wav"></audio>
+
+    <audio id="sound1" src="../audio/new/1.mp3"></audio>
+    <audio id="sound2" src="../audio/new/2.mp3"></audio>
+    <audio id="sound3" src="../audio/new/3.mp3"></audio>
+    <audio id="sound4" src="../audio/new/4.mp3"></audio>
+    <audio id="sound5" src="../audio/new/5.mp3"></audio>
+    <audio id="sound6" src="../audio/new/6.mp3"></audio>
+    <audio id="sound7" src="../audio/new/7.mp3"></audio>
+    <audio id="sound8" src="../audio/new/8.mp3"></audio>
+
+    <script type="text/javascript">
+        // Function untuk menaikkan nomor antrian dan memperbarui kotak antrian di sebelah kanan video
+        function incrementAntrian(antrianId, type) {
+            let antrianElement = document.getElementById("antrian" + antrianId);
+            let currentNumber = parseInt(antrianElement.textContent);
+            let nextNumber = currentNumber + 1;
+            antrianElement.textContent = nextNumber;
+
+            // Update kotak di sebelah kanan video dengan antrian terbaru
+            updateAntrianKotak(nextNumber, type);
+
+            // Mainkan suara sesuai nomor antrian
+            playSoundByNumber(nextNumber);
+        }
+
+        // Function untuk menurunkan nomor antrian
+        function decrementAntrian(antrianId) {
+            let antrianElement = document.getElementById("antrian" + antrianId);
+            let currentNumber = parseInt(antrianElement.textContent);
+            if (currentNumber > 0) {
+                antrianElement.textContent = currentNumber - 1;
+                var soundEffect2 = document.getElementById("soundEffect2");
+                soundEffect2.play();
+            }
+        }
+
+        // Function untuk memperbarui kotak hijau di sebelah kanan video
+        function updateAntrianKotak(number, type) {
+            let antrianKotak = document.getElementById("antrian-kotak");
+            antrianKotak.textContent = "Antrian " + type + ": " + number;
+        }
+
+        // Function untuk memutar suara secara berurutan
+        function playSoundByNumber(number) {
+            var soundEffect = document.getElementById("soundEffect"); 
+            var nomorUrut = document.getElementById("nomor-urut"); 
+            var soundToPlay = document.getElementById("sound" + number);
+
+            soundEffect.removeEventListener("ended", null);
+            nomorUrut.removeEventListener("ended", null);
+
+            if (soundToPlay) {
+                soundEffect.play();
+                soundEffect.addEventListener("ended", function() {
+                    nomorUrut.play();
+                    nomorUrut.addEventListener("ended", function() {
+                        soundToPlay.play();
+                    }, { once: true });
+                }, { once: true });
+            }
+        }
+    </script>
+</body>
 </html>
-
