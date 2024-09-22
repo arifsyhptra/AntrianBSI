@@ -128,6 +128,10 @@
 		</div>
 
 		<!-- Audio files -->
+		<audio id="antrean" src="antrian.wav"></audio>
+		<audio id="cs" src="cs.wav"></audio>
+		<audio id="teller" src="teller.wav"></audio>
+
 		<audio id="soundEffect" src="Airport_Bell.mp3"></audio>
 		<audio id="soundEffect2" src="out.wav"></audio>
 		<audio id="nomor-urut" src="nomor-urut.wav"></audio>
@@ -169,28 +173,31 @@
 				}
 			}
 
-			// Function untuk memutar suara secara berurutan
 			function playSoundByNumber(number) {
-				var soundEffect = document.getElementById("soundEffect"); // Suara awal
-				var nomorUrut = document.getElementById("nomor-urut"); // Suara "nomor urut"
-				var soundToPlay = document.getElementById("sound" + number); // Suara sesuai nomor antrian
+    var soundEffect = document.getElementById("soundEffect"); // Suara bell
+    var antrean = document.getElementById("antrean"); // Suara antrian
+    var nomorUrut = document.getElementById("nomor-urut"); // Suara "nomor urut"
+    var soundToPlay = document.getElementById("sound" + number); // Suara sesuai nomor antrian
+    var cs = document.getElementById("cs"); // Suara customer service
 
-				// Reset event listeners
-				soundEffect.removeEventListener("ended", null);
-				nomorUrut.removeEventListener("ended", null);
-
-				// Mainkan soundEffect terlebih dahulu
-				
-            if (soundToPlay) {
-                soundEffect.play();
-                soundEffect.addEventListener("ended", function() {
-                    nomorUrut.play();
+    if (soundToPlay) {
+        soundEffect.play();
+        soundEffect.addEventListener("ended", function() {
+            antrean.play();
+            antrean.addEventListener("ended", function() {
+                cs.play(); // Memutar suara customer service
+                cs.addEventListener("ended", function() {
+                    nomorUrut.play(); // Memutar suara nomor urut
                     nomorUrut.addEventListener("ended", function() {
-                        soundToPlay.play();
+                        soundToPlay.play(); // Memutar suara sesuai nomor
                     }, { once: true });
                 }, { once: true });
-            }
-        }
+            }, { once: true });
+        }, { once: true });
+    }
+}
+
+
 		function updateAntrianKotak(number, type) {
 				const antrianKotak = document.getElementById("antrian-kotak");
 				antrianKotak.textContent = type + " No " + number; // Menampilkan jenis antrian dan nomor
