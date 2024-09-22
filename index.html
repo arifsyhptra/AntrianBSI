@@ -73,7 +73,7 @@
 		
 				<!-- Spacer agar elemen berikutnya berada di kanan -->
 				<div class="ms-auto">
-					Arifsyahputrav2
+					Arifsyahputra
 				</div>
 			</div>
 		</nav>
@@ -121,6 +121,7 @@
 						<div class="square-box" id="antrian2" onclick="incrementAntrian(2, 'Teller')">1</div>
 						<!-- Tombol untuk menurunkan nomor antrian 2 -->
 						<button class="btn btn-danger mt-3" onclick="decrementAntrian(2)">Kurangi</button>
+						<button class="btn btn-danger mt-3" onclick="cek()">Cek</button>
 					</div>
 				</div>
 			</div>
@@ -193,6 +194,13 @@
 				const antrianKotak = document.getElementById("antrian-kotak");
 				antrianKotak.textContent = type + " No " + number; // Menampilkan jenis antrian dan nomor
 			}
+
+
+			// Function untuk memutar suara secara berurutan
+			function cek() {
+				sound3.play();
+				
+        }
     </script>
 </body>
 </html>
