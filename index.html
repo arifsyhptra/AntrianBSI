@@ -147,6 +147,8 @@
 				<audio id="sound10" src="sepuluh.wav"></audio>
 				<audio id="sound11" src="sebelas.wav"></audio>
 				<audio id="belas" src="belas.MP3"></audio>
+				<audio id="puluh" src="puluh.MP3"></audio>
+
 
 				<!-- Tambahkan lebih banyak file audio sesuai kebutuhan -->
 				<script type="text/javascript">
@@ -178,18 +180,35 @@
     var teller = document.getElementById("teller");
 
     var soundToPlay;
-
+    var puluhSound = document.getElementById("puluh"); // Untuk suara "puluh"
+    var belasSound = document.getElementById("belas"); // Untuk suara "belas"
+    
     if (number <= 10) {
-        soundToPlay = document.getElementById("sound" + number); // Untuk angka 1-10
+        // Untuk angka 1-10
+        soundToPlay = document.getElementById("sound" + number);
     } else if (number >= 11 && number <= 19) {
-        var firstDigit = number % 10; // Mendapatkan digit pertama (misalnya, untuk 12, firstDigit adalah 2)
-        soundToPlay = document.getElementById("sound" + firstDigit); // Suara untuk angka 1-9
-        var belasSound = document.getElementById("belas"); // Suara untuk "belas"
+        // Untuk angka 11-19
+        var firstDigit = number % 10; // Mendapatkan digit pertama
+        soundToPlay = document.getElementById("sound" + firstDigit); // Suara angka pertama (1-9)
+        belasSound = document.getElementById("belas"); // Suara "belas"
+    } else if (number >= 20 && number <= 99) {
+        // Untuk angka 20-99
+        var puluhan = Math.floor(number / 10); // Mendapatkan angka puluhan (2, 3, dst.)
+        var satuan = number % 10; // Mendapatkan angka satuan (0-9)
+
+        // Memainkan suara untuk puluhan
+        soundToPlay = document.getElementById("sound" + puluhan);
+        puluhSound = document.getElementById("puluh"); // Suara "puluh"
+
+        if (satuan > 0) {
+            // Jika ada angka satuan (misalnya 21, 32)
+            var satuanSound = document.getElementById("sound" + satuan);
+        }
     }
 
-    // Memainkan suara secara berurutan sesuai jenis (CS atau Teller)
+    // Memainkan suara sesuai jenis antrian (CS atau Teller)
     if (type === 'Teller') {
-        if (number <= 10 || (number >= 11 && number <= 19)) {
+        if (soundToPlay) {
             soundEffect.play(); // Mainkan suara bell
             soundEffect.addEventListener("ended", function () {
                 antrean.play(); // Mainkan suara antrian
@@ -198,22 +217,27 @@
                     teller.addEventListener("ended", function () {
                         nomorUrut.play(); // Mainkan suara "nomor urut"
                         nomorUrut.addEventListener("ended", function () {
-                            if (soundToPlay) {
-                                soundToPlay.play(); // Mainkan suara angka (1-9 atau digit pertama)
-                                if (belasSound && number > 11) {
-                                    soundToPlay.addEventListener("ended", function () {
-                                        belasSound.play(); // Mainkan suara "belas" setelah digit pertama selesai
+                            soundToPlay.play(); // Mainkan suara angka (1-9 atau puluhan)
+                            soundToPlay.addEventListener("ended", function () {
+                                if (belasSound && number > 10 && number < 20) {
+                                    belasSound.play(); // Mainkan suara "belas"
+                                } else if (puluhSound && number >= 20 && satuan === 0) {
+                                    puluhSound.play(); // Mainkan suara "puluh" jika angka puluhan penuh (20, 30, dst.)
+                                } else if (puluhSound && satuan > 0) {
+                                    puluhSound.play(); // Mainkan suara "puluh"
+                                    puluhSound.addEventListener("ended", function () {
+                                        satuanSound.play(); // Mainkan suara angka satuan jika ada
                                     }, { once: true });
                                 }
-                            }
+                            }, { once: true });
                         }, { once: true });
                     }, { once: true });
                 }, { once: true });
             }, { once: true });
         }
     } else {
-        // Jika bukan Teller, jalankan logika yang sama untuk CS
-        if (number <= 10 || (number >= 11 && number <= 19)) {
+        // Jika bukan Teller, logika yang sama berlaku untuk CS
+        if (soundToPlay) {
             soundEffect.play();
             soundEffect.addEventListener("ended", function () {
                 antrean.play();
@@ -222,14 +246,19 @@
                     cs.addEventListener("ended", function () {
                         nomorUrut.play();
                         nomorUrut.addEventListener("ended", function () {
-                            if (soundToPlay) {
-                                soundToPlay.play(); // Mainkan suara angka (1-9 atau digit pertama)
-                                if (belasSound && number > 10) {
-                                    soundToPlay.addEventListener("ended", function () {
-                                        belasSound.play(); // Mainkan suara "belas"
+                            soundToPlay.play(); // Mainkan suara angka (1-9 atau puluhan)
+                            soundToPlay.addEventListener("ended", function () {
+                                if (belasSound && number > 10 && number < 20) {
+                                    belasSound.play(); // Mainkan suara "belas"
+                                } else if (puluhSound && number >= 20 && satuan === 0) {
+                                    puluhSound.play(); // Mainkan suara "puluh" jika angka puluhan penuh
+                                } else if (puluhSound && satuan > 0) {
+                                    puluhSound.play(); // Mainkan suara "puluh"
+                                    puluhSound.addEventListener("ended", function () {
+                                        satuanSound.play(); // Mainkan suara angka satuan jika ada
                                     }, { once: true });
                                 }
-                            }
+                            }, { once: true });
                         }, { once: true });
                     }, { once: true });
                 }, { once: true });
@@ -237,6 +266,7 @@
         }
     }
 }
+
 
 					function updateAntrianKotak(number, type) {
 						const antrianKotak = document.getElementById("antrian-kotak");
