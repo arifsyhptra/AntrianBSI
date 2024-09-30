@@ -48,11 +48,48 @@
 					margin-top: 20px;
 					cursor: pointer; /* Menambahkan pointer agar terlihat interaktif */
 				}
+#antrian-kotak {
+    width: 70%; /* Increase width for better prominence */
+    height: 250px;
+    font-size: 4rem; /* Adjusted font size for better balance */
+    background: linear-gradient(135deg, #00c6ff 0%, #0072ff 100%); /* Beautiful gradient */
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 30px; /* Smooth, rounder corners */
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3); /* Stronger shadow for a floating effect */
+    text-align: center;
+    margin-top: 30px;
+    font-family: 'Arial', sans-serif; /* Modern, clean font */
+    letter-spacing: 5px; /* Add space between letters for elegance */
+    text-transform: uppercase; /* Uppercase letters for a stronger visual impact */
+    position: relative; /* For adding more effects later if needed */
+    animation: pulse 2s infinite; /* Add smooth pulsing animation */
+}
+
+/* Adding a soft pulse animation */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05); /* Slight zoom for pulse effect */
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* New class for the text */
+
+
+
 				#antrian-kotak {
 					width: 50%;
 					height: 200px;
-					font-size: 3rem;
-					background-color: #ecb725;
+					font-size: 2rem;
+					background-color: 
 					color: white;
 					display: flex;
 					justify-content: center;
@@ -73,7 +110,7 @@
 				
 						<!-- Spacer agar elemen berikutnya berada di kanan -->
 						<div class="ms-auto">
-							Arifsyahputrav7
+							Arifsyahputrav6
 						</div>
 					</div>
 				</nav>
@@ -96,7 +133,7 @@
 						<!-- Kotak antrian di sebelah kanan video -->
 						<div class="col-md-6 d-flex justify-content-center align-items-center">
 							<div id="antrian-kotak">
-								1 <!-- Nilai awal yang akan berubah saat antrian ditambah -->
+								Antrian<br> No 1 <!-- Nilai awal yang akan berubah saat antrian ditambah -->
 							</div>
 						</div>
 					</div>
@@ -268,10 +305,16 @@
 }
 
 
-					function updateAntrianKotak(number, type) {
-						const antrianKotak = document.getElementById("antrian-kotak");
-						antrianKotak.textContent ="Antrian" +type + " No " + number;
-					}
+
+
+function updateAntrianKotak(number, type) {
+    const antrianKotak = document.getElementById("antrian-kotak");
+    // Create the text with <br> tags for each line
+    const text = "Antrian<br>" + type + "<br>No " + number;
+    antrianKotak.innerHTML = text; // Set the inner HTML
+}
+
+
 		
 					function cek() {
 						var sound1 = document.getElementById("sound1");
